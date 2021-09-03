@@ -41,6 +41,7 @@ public class ReaderController {
             _reader.setName(reader.getName());
             _reader.setPassword(reader.getPassword());
             _reader.setPhone(reader.getPhone());
+            _reader.setCredit(reader.getCredit());
             return new ResponseEntity<>(readerRepository.save(_reader), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

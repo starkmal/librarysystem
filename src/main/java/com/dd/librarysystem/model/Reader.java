@@ -20,18 +20,31 @@ public class Reader {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "credit")
+    private int credit = 100;
+
     public Reader() {}
 
-    public Reader(String name, String password, String phone) {
+    public Reader(String name, String password, String phone, int credit) {
         this.name = name;
         this.password = password;
         this.phone = phone;
+        this.credit = credit;
     }
 
     public Reader(Reader b) {
         this.name = b.getName();
         this.password = b.getPassword();
         this.phone = b.getPhone();
+        this.credit = b.getCredit();
+    }
+
+    public int getCredit() {
+        return credit;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
     }
 
     public int getId() {
