@@ -1,5 +1,4 @@
-package com.example.librarysystem.model;
-
+package com.dd.librarysystem.model;
 
 import javax.persistence.*;
 
@@ -11,58 +10,61 @@ import javax.persistence.*;
 public class Cart {
     @Id
     @Column(name = "book_id")
-    private String book_id;
+    private Integer bookId;
 
     @Id
     @Column(name = "reader_id")
-    private String reader_id;
+    private Integer readerId;
 
     @Id
     @Column(name = "submit_time")
-    private String submit_time;
+    private String submitTime;
 
-    public Cart(String book_id, String reader_id, String submit_time) {
-        this.book_id = book_id;
-        this.reader_id = reader_id;
-        this.submit_time = submit_time;
+    public Cart() {
+    }
+
+    public Cart(Integer book_id, Integer reader_id, String submit_time) {
+        this.bookId = book_id;
+        this.readerId = reader_id;
+        this.submitTime = submit_time;
     }
 
     public Cart(Cart cart){
-        this.book_id = cart.book_id;
-        this.reader_id = cart.reader_id;
-        this.submit_time = cart.submit_time;
+        this.bookId = cart.bookId;
+        this.readerId = cart.readerId;
+        this.submitTime = cart.submitTime;
     }
 
-    public String getBook_id() {
-        return book_id;
+    public Integer getBookId() {
+        return bookId;
     }
 
-    public void setBook_id(String book_id) {
-        this.book_id = book_id;
+    public void setBookId(Integer bookId) {
+        this.bookId = bookId;
     }
 
-    public String getReader_id() {
-        return reader_id;
+    public Integer getReaderId() {
+        return readerId;
     }
 
-    public void setReader_id(String reader_id) {
-        this.reader_id = reader_id;
+    public void setReaderId(Integer readerId) {
+        this.readerId = readerId;
     }
 
-    public String getSubmit_time() {
-        return submit_time;
+    public String getSubmitTime() {
+        return submitTime;
     }
 
-    public void setSubmit_time(String submit_time) {
-        this.submit_time = submit_time;
+    public void setSubmitTime(String submitTime) {
+        this.submitTime = submitTime;
     }
 
     @Override
     public String toString() {
         return "Cart{" +
-                "book_id='" + book_id + '\'' +
-                ", reader_id='" + reader_id + '\'' +
-                ", submit_time='" + submit_time + '\'' +
+                "book_id='" + bookId + '\'' +
+                ", reader_id='" + readerId + '\'' +
+                ", submit_time='" + submitTime + '\'' +
                 '}';
     }
 }

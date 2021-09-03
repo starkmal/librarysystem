@@ -1,9 +1,9 @@
-package com.example.librarysystem.model;
+package com.dd.librarysystem.model;
 
 import java.io.Serializable;
 
 public class CartId implements Serializable {
-    private String book_id;
-    private String reader_id;
-    private String submit_time;
+    private Integer bookId;
+    private Integer readerId;
+    private String submitTime;
 }

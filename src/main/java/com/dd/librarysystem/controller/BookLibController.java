@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @RestController
@@ -55,6 +56,22 @@ public class BookLibController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //与borrow部分逻辑相同
+    @PutMapping("/repo/{id}/reserve")
+    public ResponseEntity<BookLib> updateReserve(@PathVariable("id") int id, @RequestBody BookLib book) {
+        Optional<BookLib> bookLibData = bookLibRepository.findById(id);
+
+        if(bookLibData.isPresent()) {
+            BookLib _book = bookLibData.get();
+            _book.setIsbn(book.getIsbn());
+            _book.setLocation(book.getLocation());
+            _book.setState(book.getState());
+            return new ResponseEntity<>(bookLibRepository.save(_book), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
     }
 }
