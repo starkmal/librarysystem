@@ -16,7 +16,7 @@ public class ReaderController {
     ReaderRepository readerRepository;
 
     @GetMapping("/reader/{id}")
-    public ResponseEntity<Reader> getBook(@PathVariable("id") int id) {
+    public ResponseEntity<Reader> getReader(@PathVariable("id") int id) {
         Optional<Reader> readerData = readerRepository.findById(id);
 
         return readerData.map(reader -> new ResponseEntity<>(reader, HttpStatus.OK))
