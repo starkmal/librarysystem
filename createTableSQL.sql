@@ -49,17 +49,6 @@ CREATE TABLE `book_in_library` (
   FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
-
-CREATE TABLE `writes` (
-  `author_id` int(10) unsigned NOT NULL,
-  `isbn` varchar(13) COLLATE utf8mb4_bin NOT NULL,
-  PRIMARY KEY (`author_id`,`isbn`),
-  KEY `isbn` (`isbn`),
-  FOREIGN KEY (`author_id`) REFERENCES `author` (`id`),
-  FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
-
 CREATE TABLE `cart` (
     `id` int not null,
     `reader_id` int(10) unsigned NOT NULL,
@@ -77,18 +66,14 @@ CREATE TABLE `reserve_books` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `borrow_item` (
-  `borrow_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `reader_id` int(10) unsigned NOT NULL,
   `book_id` int(10) unsigned NOT NULL,
   `borrow_librarian_id` int(10) unsigned NOT NULL,
   `return_librarian_id` int(10) unsigned,
   `borrow_time` datetime NOT NULL,
   `return_time` datetime,
-  PRIMARY KEY (`borrow_id`),
-  KEY `reader_id` (`reader_id`),
-  KEY `book_id` (`book_id`),
-  KEY `borrow_librarian_id` (`borrow_librarian_id`),
-  KEY `return_librarian_id` (`return_librarian_id`),
+  PRIMARY KEY (`id`),
   CONSTRAINT `borrow_item_ibfk_1` FOREIGN KEY (`reader_id`) REFERENCES `reader` (`id`),
   CONSTRAINT `borrow_item_ibfk_2` FOREIGN KEY (`book_id`) REFERENCES `book_in_library` (`id`),
   CONSTRAINT `borrow_item_ibfk_3` FOREIGN KEY (`borrow_librarian_id`) REFERENCES `librarian` (`id`),

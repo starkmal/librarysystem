@@ -19,11 +19,8 @@ public class ReaderController {
     public ResponseEntity<Reader> getBook(@PathVariable("id") int id) {
         Optional<Reader> readerData = readerRepository.findById(id);
 
-        if (readerData.isPresent()) {
-            return new ResponseEntity<>(readerData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return readerData.map(reader -> new ResponseEntity<>(reader, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/reader")

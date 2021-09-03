@@ -20,7 +20,7 @@ public class BorrowController {
     public ResponseEntity<List<Borrow>> getReaderBorrowRecords(@PathVariable("id") int reader_id) {
         try {
             List<Borrow> borrows = new ArrayList<Borrow>();
-            borrowRepository.findByReaderId(reader_id).forEach(borrows::add);
+            borrows.addAll(borrowRepository.findByReaderId(reader_id));
             if (borrows.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }

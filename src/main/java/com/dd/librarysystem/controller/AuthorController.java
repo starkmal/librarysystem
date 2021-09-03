@@ -26,18 +26,14 @@ public class AuthorController {
     public ResponseEntity<Author> getAuthor(@PathVariable("id") int id) {
         Optional<Author> authorData = authorRepository.findById(id);
 
-        if (authorData.isPresent()) {
-            return new ResponseEntity<>(authorData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return authorData.map(author -> new ResponseEntity<>(author, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/author/{id}/books")
     public ResponseEntity<List<Book>> getAuthorBooks(@PathVariable("id") int id) {
         try {
-            List<Book> books = new ArrayList<Book>();
-            bookRepository.findByAid(id).forEach(books::add);
+            List<Book> books = new ArrayList<Book>(bookRepository.findByAid(id));
 
             if (books.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

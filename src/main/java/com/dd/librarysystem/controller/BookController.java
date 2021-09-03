@@ -34,14 +34,14 @@ public class BookController {
             List<Book> books = new ArrayList<Book>();
 
             if (isbn != null)
-                bookRepository.findAll().forEach(books::add);
+                books.addAll(bookRepository.findAll());
             else if (title != null)
-                bookRepository.findByTitleContaining(title).forEach(books::add);
+                books.addAll(bookRepository.findByTitleContaining(title));
             else if (author != null) {
                 List<Author> authors = new ArrayList<Author>();
-                authorRepository.findByName(author).forEach(authors::add);
+                authors.addAll(authorRepository.findByName(author));
                 for (Author a: authors) {
-                    bookRepository.findByAid(a.getId()).forEach(books::add);
+                    books.addAll(bookRepository.findByAid(a.getId()));
                 }
             }
 
@@ -59,11 +59,7 @@ public class BookController {
     public ResponseEntity<Book> getBook(@PathVariable("isbn") String isbn) {
         Optional<Book> bookData = bookRepository.findById(isbn);
 
-        if (bookData.isPresent()) {
-            return new ResponseEntity<>(bookData.get(), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return bookData.map(book -> new ResponseEntity<>(book, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/book")
@@ -76,7 +72,7 @@ public class BookController {
         }
     }
 
-    @PutMapping("/book/{id}")
+    @PutMapping("/book/{isbn}")
     public ResponseEntity<Book> updateBook(@PathVariable("isbn") String isbn, @RequestBody Book book) {
         Optional<Book> bookData = bookRepository.findById(isbn);
 
@@ -94,7 +90,7 @@ public class BookController {
         }
     }
 
-    @DeleteMapping("/book/{id}")
+    @DeleteMapping("/book/{isbn}")
     public ResponseEntity<HttpStatus> deleteBook(@PathVariable("isbn") String isbn) {
         try {
             bookRepository.deleteById(isbn);
