@@ -21,7 +21,7 @@ public class BookController {
     @Autowired
     AuthorRepository authorRepository;
 
-    @GetMapping("/book")
+    @GetMapping("/search")
     public ResponseEntity<List<Book>> getBooksBy(
             @RequestParam(required = false)
             String title,
@@ -56,10 +56,7 @@ public class BookController {
     }
 
     @GetMapping("/book/{isbn}")
-    public ResponseEntity<Book> getBook(
-            @PathVariable("isbn")
-            String isbn
-    ) {
+    public ResponseEntity<Book> getBook(@PathVariable("isbn") String isbn) {
         Optional<Book> bookData = bookRepository.findById(isbn);
 
         if (bookData.isPresent()) {
@@ -70,10 +67,9 @@ public class BookController {
     }
 
     @PostMapping("/book")
-    public ResponseEntity<Book> createTutorial(@RequestBody Book book) {
+    public ResponseEntity<Book> createBook(@RequestBody Book book) {
         try {
-            Book _book = bookRepository
-                    .save(new Book(book));
+            Book _book = bookRepository.save(new Book(book));
             return new ResponseEntity<>(_book, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -81,7 +77,7 @@ public class BookController {
     }
 
     @PutMapping("/book/{id}")
-    public ResponseEntity<Book> updateTutorial(@PathVariable("isbn") String isbn, @RequestBody Book book) {
+    public ResponseEntity<Book> updateBook(@PathVariable("isbn") String isbn, @RequestBody Book book) {
         Optional<Book> bookData = bookRepository.findById(isbn);
 
         if (bookData.isPresent()) {
@@ -99,7 +95,7 @@ public class BookController {
     }
 
     @DeleteMapping("/book/{id}")
-    public ResponseEntity<HttpStatus> deleteTutorial(@PathVariable("isbn") String isbn) {
+    public ResponseEntity<HttpStatus> deleteBook(@PathVariable("isbn") String isbn) {
         try {
             bookRepository.deleteById(isbn);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);

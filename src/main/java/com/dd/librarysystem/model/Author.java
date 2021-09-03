@@ -23,7 +23,6 @@ public class Author {
     }
 
     public Author(Author b) {
-        this.id = b.getId();
         this.name = b.getName();
         this.desc = b.getDesc();
     }
