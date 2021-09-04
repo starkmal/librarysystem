@@ -1,70 +1,71 @@
 package com.dd.librarysystem.model;
 
 import javax.persistence.*;
+import java.security.PrivateKey;
+import java.util.List;
+import java.util.Set;
 
 // 为一次加入购物车操作
 @Entity
-@Table(name = "borrow_cart")
-@IdClass(CartId.class)
-// 联合主键：book_id, reader_id, submit_id
+@Table(name = "cart")
+
 public class Cart {
     @Id
-    @Column(name = "book_id")
-    private Integer bookId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @Column(name = "id")
+    private Integer id;
 
-    @Id
     @Column(name = "reader_id")
     private Integer readerId;
 
-    @Id
     @Column(name = "submit_time")
     private String submitTime;
+
+    @Column(name = "stat")
+    private String stat;
+
+    @OneToMany(targetEntity = Reserve.class, mappedBy = "reserveId",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Reserve> reserves;
+
+    @OneToOne(targetEntity =Reader.class, mappedBy = "cart")
+    private Reader reader;
+
+
+    public List<Reserve> getReserves() {
+        return reserves;
+    }
+
+    public void setReserves(List<Reserve> reserves) {
+        this.reserves = reserves;
+    }
 
     public Cart() {
     }
 
-    public Cart(Integer book_id, Integer reader_id, String submit_time) {
-        this.bookId = book_id;
-        this.readerId = reader_id;
-        this.submitTime = submit_time;
+    public Cart(Integer cartId, Integer readerId, String submitTime, String stat, List<Reserve> reserves) {
+        this.id = cartId;
+        this.readerId = readerId;
+        this.submitTime = submitTime;
+        this.stat = stat;
+        this.reserves = reserves;
     }
 
-    public Cart(Cart cart){
-        this.bookId = cart.bookId;
+    public Cart(Cart cart) {
+        this.id = cart.id;
         this.readerId = cart.readerId;
         this.submitTime = cart.submitTime;
-    }
-
-    public Integer getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Integer bookId) {
-        this.bookId = bookId;
-    }
-
-    public Integer getReaderId() {
-        return readerId;
-    }
-
-    public void setReaderId(Integer readerId) {
-        this.readerId = readerId;
-    }
-
-    public String getSubmitTime() {
-        return submitTime;
-    }
-
-    public void setSubmitTime(String submitTime) {
-        this.submitTime = submitTime;
+        this.stat = cart.stat;
+        this.reserves = cart.reserves;
     }
 
     @Override
     public String toString() {
         return "Cart{" +
-                "book_id='" + bookId + '\'' +
-                ", reader_id='" + readerId + '\'' +
-                ", submit_time='" + submitTime + '\'' +
+                "id=" + id +
+                ", readerId=" + readerId +
+                ", submitTime='" + submitTime + '\'' +
+                ", stat='" + stat + '\'' +
+                ", reserves=" + reserves +
                 '}';
     }
 }

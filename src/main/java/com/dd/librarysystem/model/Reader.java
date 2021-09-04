@@ -20,6 +20,9 @@ public class Reader {
     @Column(name = "phone")
     private String phone;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Cart cart;
+
     public Reader() {}
 
     public Reader(String name, String password, String phone) {
