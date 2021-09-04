@@ -1,37 +1,36 @@
 package com.dd.librarysystem.model;
 
-import org.hibernate.annotations.GeneratorType;
-
 import javax.persistence.*;
 
 @Entity
-@Table(name="reader")
-public class Reader {
+@Table(name="user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "name")
+    @Column(name="name",nullable = false)
     private String name;
 
-    @Column(name = "password")
+    @Column(name="password",nullable = false)
     private String password;
 
-    @Column(name = "phone")
+    @Column(name="phone")
     private String phone;
 
-    public Reader() {}
-
-    public Reader(String name, String password, String phone) {
+    public User(String name, String password,String phone) {
         this.name = name;
         this.password = password;
         this.phone = phone;
     }
+    public User(User b) {
+        this.name = b.name;
+        this.password = b.password;
+        this.phone = b.phone;
+    }
 
-    public Reader(Reader b) {
-        this.name = b.getName();
-        this.password = b.getPassword();
-        this.phone = b.getPhone();
+    public User() {
+
     }
 
     public int getId() {
@@ -50,6 +49,14 @@ public class Reader {
         this.name = name;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public String getPassword() {
         return password;
     }
@@ -58,11 +65,4 @@ public class Reader {
         this.password = password;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 }

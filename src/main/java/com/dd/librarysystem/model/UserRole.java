@@ -28,7 +28,7 @@ public class UserRole {
 
     public UserRole(UserRole b) {
         this.userId = b.getUserId();
-        this.roleId = getRoleId();
+        this.roleId = b.getRoleId();
     }
 
     public int getId() {

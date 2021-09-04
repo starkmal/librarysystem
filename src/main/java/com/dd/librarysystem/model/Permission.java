@@ -12,6 +12,15 @@ public class Permission {
     @Column(name="name",nullable = false)
     private String name;
 
+    public Permission(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+//    public Permission(Permission b) {
+//        this.id = b.id;
+//        this.name = b.name;
+//    }
 
     public Permission() {}
 

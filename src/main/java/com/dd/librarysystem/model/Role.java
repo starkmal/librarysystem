@@ -13,15 +13,16 @@ public class Role {
     private String name;
 
 
-    public Role() {}
-
     public Role(String name) {
         this.name = name;
     }
 
     public Role(Role b) {
-        this.name = b.getName();
+        this.name = b.name;
     }
+    public Role() {
+    }
+
 
     public int getId() {
         return id;
