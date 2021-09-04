@@ -38,8 +38,7 @@ public class BookController {
             else if (title != null)
                 books.addAll(bookRepository.findByTitleContaining(title));
             else if (author != null) {
-                List<Author> authors = new ArrayList<Author>();
-                authors.addAll(authorRepository.findByName(author));
+                List<Author> authors = new ArrayList<Author>(authorRepository.findByName(author));
                 for (Author a: authors) {
                     books.addAll(bookRepository.findByAid(a.getId()));
                 }

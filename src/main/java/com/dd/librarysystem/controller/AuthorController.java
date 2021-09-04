@@ -30,6 +30,19 @@ public class AuthorController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/author")
+    public ResponseEntity<List<Author>> getAuthorByName(@RequestParam String name) {
+        try {
+            List<Author> authors = new ArrayList<Author>(authorRepository.findByName(name));
+            if (authors.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(authors, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/author/{id}/books")
     public ResponseEntity<List<Book>> getAuthorBooks(@PathVariable("id") int id) {
         try {
