@@ -2,8 +2,8 @@
 #新增了一些数据用于测试
 
 #先drop数据库然后运行LibrarysystemApplication生成table
-drop database if EXISts librarysystem;
-create database librarysystem;
+#drop database if EXISts librarysystem;
+#create database librarysystem;
 
 
 #然后再执行sql语句
@@ -48,11 +48,11 @@ INSERT INTO `book_in_library` (`id`, `isbn`, `location`, `state`) VALUES (17, '9
 INSERT INTO `book_in_library` (`id`, `isbn`, `location`, `state`) VALUES (18, '9787020024759', '2F7S', 'inlib');
 
 
-INSERT INTO `reader` (`name`, `password`, `phone`) VALUES ('EdSheeran','E10ADC3949BA59ABBE56E057F20F883E','13333333333');
-INSERT INTO `reader` (`name`, `password`, `phone`) VALUES ('Bruno','E10ADC3949BA59ABBE56E057F20F883E','13333333331');
-INSERT INTO `reader` (`name`, `password`, `phone`) VALUES ('Maroon','E10ADC3949BA59ABBE56E057F20F883E','13333333332');
-INSERT INTO `reader` (`name`, `password`, `phone`) VALUES ('Lola','E10ADC3949BA59ABBE56E057F20F883E','13333333335');
-INSERT INTO `reader` (`name`, `password`, `phone`) VALUES ('Michael','E10ADC3949BA59ABBE56E057F20F883E','13333333334');
+INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('EdSheeran','E10ADC3949BA59ABBE56E057F20F883E','13333333333',10);
+INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('Bruno','E10ADC3949BA59ABBE56E057F20F883E','13333333331',10);
+INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('Maroon','E10ADC3949BA59ABBE56E057F20F883E','13333333332',10);
+INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('Lola','E10ADC3949BA59ABBE56E057F20F883E','13333333335',10);
+INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('Michael','E10ADC3949BA59ABBE56E057F20F883E','13333333334',10);
 
 INSERT INTO `librarysystem`.`role` (`id`, `description`, `name`) VALUES ('1', 'admin', 'admin');
 INSERT INTO `librarysystem`.`role` (`id`, `description`, `name`) VALUES ('2', 'user', 'user');
