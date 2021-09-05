@@ -9,28 +9,20 @@ public class Permission {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="name",nullable = false)
+    @Column(name="name",nullable = false,unique = true)
     private String name;
 
-    public Permission(int id, String name) {
+    @Column(nullable = false)
+    private String description;
+
+
+    public Permission(int id, String name, String description) {
         this.id = id;
         this.name = name;
+        this.description = description;
     }
-
-//    public Permission(Permission b) {
-//        this.id = b.id;
-//        this.name = b.name;
-//    }
 
     public Permission() {}
-
-    public Permission(String name) {
-        this.name = name;
-    }
-
-    public Permission(Permission b) {
-        this.name = b.getName();
-    }
 
     public int getId() {
         return id;
@@ -46,5 +38,13 @@ public class Permission {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

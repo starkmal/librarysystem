@@ -54,8 +54,10 @@ INSERT INTO `reader` (`name`, `password`, `phone`) VALUES ('Maroon','E10ADC3949B
 INSERT INTO `reader` (`name`, `password`, `phone`) VALUES ('Lola','E10ADC3949BA59ABBE56E057F20F883E','13333333335');
 INSERT INTO `reader` (`name`, `password`, `phone`) VALUES ('Michael','E10ADC3949BA59ABBE56E057F20F883E','13333333334');
 
-INSERT INTO `user` (`name`, `password`, `phone`) VALUES ('EdSheeran','E10ADC3949BA59ABBE56E057F20F883E','13333333333');
-INSERT INTO `user` (`name`, `password`, `phone`) VALUES ('Bruno','E10ADC3949BA59ABBE56E057F20F883E','13333333331');
-INSERT INTO `user` (`name`, `password`, `phone`) VALUES ('Maroon','E10ADC3949BA59ABBE56E057F20F883E','13333333332');
-INSERT INTO `user` (`name`, `password`, `phone`) VALUES ('Lola','E10ADC3949BA59ABBE56E057F20F883E','13333333335');
-INSERT INTO `user` (`name`, `password`, `phone`) VALUES ('Michael','E10ADC3949BA59ABBE56E057F20F883E','13333333334');
+INSERT INTO `librarysystem`.`role` (`id`, `description`, `name`) VALUES ('1', 'admin', 'admin');
+INSERT INTO `librarysystem`.`role` (`id`, `description`, `name`) VALUES ('2', 'user', 'user');
+INSERT INTO `librarysystem`.`role` (`id`, `description`, `name`) VALUES ('3', 'suspend', 'suspend');
+
+INSERT INTO `librarysystem`.`user` (`id`, `name`, `password`, `phone`, `role_id`) VALUES ('1', 'admin', 'admin', '123456', '1');
+INSERT INTO `librarysystem`.`user` (`id`, `name`, `password`, `phone`, `role_id`) VALUES ('2', 'w', '123456', '123456', '1');
+INSERT INTO `librarysystem`.`user` (`id`, `name`, `password`, `phone`, `role_id`) VALUES ('3', 'ss', '123456', '123456', '2');

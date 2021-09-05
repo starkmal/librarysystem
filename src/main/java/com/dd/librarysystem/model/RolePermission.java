@@ -9,24 +9,23 @@ public class RolePermission {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="role_id",nullable = false)
-    private int roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
-    @Column(name="permission_id",nullable = false)
-    private int permissionId;
+    @ManyToOne
+    @JoinColumn(name = "permission_id")
+    private Permission permission;
 
 
     public RolePermission() {}
 
-    public RolePermission(int roleId, int permissionId) {
-        this.roleId = roleId;
-        this.permissionId = permissionId;
+    public RolePermission(int id, Role role, Permission permission) {
+        this.id = id;
+        this.role = role;
+        this.permission = permission;
     }
 
-    public RolePermission(RolePermission b) {
-        this.permissionId = b.getPermissionId();
-        this.roleId = getId();
-    }
 
     public int getId() {
         return id;
@@ -36,19 +35,19 @@ public class RolePermission {
         this.id = id;
     }
 
-    public int getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(int roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
-    public int getPermissionId() {
-        return permissionId;
+    public Permission getPermission() {
+        return permission;
     }
 
-    public void setPermissionId(int permissionId) {
-        this.permissionId = permissionId;
+    public void setPermission(Permission permission) {
+        this.permission = permission;
     }
 }
