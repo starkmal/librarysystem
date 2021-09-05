@@ -11,16 +11,6 @@ import org.springframework.web.bind.annotation.*;
 //@RequiresPermissions("user:insert")
 public class LoginController {
 
-    @RequestMapping(value = "/special",method = RequestMethod.GET)
-    public String  adminSpecial() {
-        return "Hi! This is admin special! Made for test.\n requires \"user:insert\" permission";
-    }
-
-    @RequestMapping("/index/{id2}")
-    public String index(@PathVariable("id2") int id) {
-        return "index" + id;
-    }
-
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password) {

@@ -10,6 +10,9 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Component("authorizer")
 class UserRealm extends AuthorizingRealm {
 
@@ -28,7 +31,15 @@ class UserRealm extends AuthorizingRealm {
         User user = (User)principalCollection.getPrimaryPrincipal();
 
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        info.setRoles(user.getRoleNames());
+
+        //暂时把全部用户都设置成admin
+        Set<String> role = new HashSet<>();
+        role.add("admin");
+        info.setRoles(role);
+        Set<String> perm = new HashSet<>();
+        perm.add("admin:all");
+        info.setStringPermissions(perm);
+        //info.setRoles(user.getRoleNames());
         //默认数据库中user和role是多对一的关系,不存在user有多个role的情况(但是没有约束...)
         //暂不设置permission
         //info.setStringPermissions(rmsAdminLoginService.getPermissionByRoleId(user.getRoleId()));
