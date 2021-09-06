@@ -7,14 +7,15 @@ import com.dd.librarysystem.model.Cart;
 import com.dd.librarysystem.repository.BookLibRepository;
 import com.dd.librarysystem.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class BookLibController {
@@ -26,12 +27,28 @@ public class BookLibController {
 
     /**
      * 返回某本书的剩余数量
-     * @param isbn
      * @return 数量
      */
-    @GetMapping("/repo/book/{isbn}")
+    @GetMapping("/repo/num/{isbn}")
     public ResponseEntity<Integer> getBookRemain(@PathVariable("isbn") String isbn) {
         return new ResponseEntity<>(bookLibRepository.countByIsbn(isbn), HttpStatus.OK);
+    }
+
+    /**
+     * 返回某个isbn的所有藏书
+     * @return list
+     */
+    @GetMapping("/repo/book/{isbn}")
+    public ResponseEntity<List<BookLib>> getRepoByISBN(@PathVariable("isbn") String isbn) {
+        try {
+            List<BookLib> books = bookLibRepository.findByIsbn(isbn);
+            if (books.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(books, HttpStatus.OK);
+        } catch(Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**

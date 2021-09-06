@@ -2,16 +2,19 @@ package com.dd.librarysystem.controller;
 
 import com.dd.librarysystem.model.Author;
 import com.dd.librarysystem.model.Book;
+import com.dd.librarysystem.model.BookLib;
 import com.dd.librarysystem.repository.AuthorRepository;
 import com.dd.librarysystem.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 public class BookController {
@@ -20,35 +23,36 @@ public class BookController {
 
     @Autowired
     AuthorRepository authorRepository;
-
     @GetMapping("/search")
-    public ResponseEntity<List<Book>> getBooksBy(
-            @RequestParam(required = false)
-            String title,
-            @RequestParam(required = false)
-            String isbn,
-            @RequestParam(required = false)
-            String author
+    public ResponseEntity<Map<String, Object>> searchBook(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String isbn,
+            @RequestParam(required = false) String authorname,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
         try {
-            List<Book> books = new ArrayList<Book>();
-
+            List<Book> books;
+            Pageable paging = PageRequest.of(page, size);
+            Page<Book> pageTuts = null;
             if (isbn != null)
-                books.addAll(bookRepository.findAll());
+                pageTuts = bookRepository.findByIsbn(isbn, paging);
             else if (title != null)
-                books.addAll(bookRepository.findByTitleContaining(title));
-            else if (author != null) {
-                List<Author> authors = new ArrayList<Author>(authorRepository.findByName(author));
-                for (Author a: authors) {
-                    books.addAll(bookRepository.findByAid(a.getId()));
-                }
+                pageTuts = bookRepository.findByTitleContaining(title, paging);
+            else if (authorname != null) {
+                List<Author> author = authorRepository.findByName(authorname);
+                int id = author.isEmpty() ? -1 : author.get(0).getId();
+                pageTuts = bookRepository.findByAid(id, paging);
             }
+            assert pageTuts != null;
+            books = pageTuts.getContent();
 
-            if (books.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(books, HttpStatus.OK);
+            Map<String, Object> res = new HashMap<>();
+            res.put("books", books);
+            res.put("currentPage", pageTuts.getNumber());
+            res.put("totalItems", pageTuts.getTotalElements());
+            res.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }

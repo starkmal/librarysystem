@@ -31,9 +31,9 @@ public class AuthorController {
     }
 
     @GetMapping("/author")
-    public ResponseEntity<List<Author>> getAuthorByName(@RequestParam String name) {
+    public ResponseEntity<List<Author>> searchAuthorByName(@RequestParam String name) {
         try {
-            List<Author> authors = new ArrayList<Author>(authorRepository.findByName(name));
+            List<Author> authors = authorRepository.findByNameContaining(name);
             if (authors.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
