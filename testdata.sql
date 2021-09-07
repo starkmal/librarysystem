@@ -8,14 +8,21 @@
 
 #然后再执行sql语句
 -- use librarysystem;
--- INSERT INTO `author` ( `name`, `description`) VALUES ('Jaye','北卡罗莱纳大学哲学系教授');
--- INSERT INTO `author` ( `name`, `description`) VALUES ('Xueqin Cao', 'The Story of the Stone');
--- INSERT INTO `author` ( `name`, `description`) VALUES ('Chengen Wu','Journey to the West');
--- INSERT INTO `author` ( `name`, `description`) VALUES ('司马迁','西汉史学家');
--- INSERT INTO `author` ( `name`, `description`) VALUES ('陈忠实','中国当代著名作家，中国作家协会副主席');
--- INSERT INTO `author` ( `name`, `description`) VALUES ('钱钟书','作家、文学研究家、翻译家');
---
--- INSERT INTO `book` (`isbn`, `price`, `title`, `description`) VALUES ('9787020026906',28.00,'白鹿原','这是一部渭河平原五十年变迁的雄奇史诗，一轴中国农村班斓多彩、触目惊心的长幅画卷。主人公六娶六丧，神秘的序曲预示着不祥。一个家族两代子孙，为争夺白鹿原的统治代代争斗不已，上演了一幕幕惊心动魄的活剧：巧取风水地，恶施美人计，孝子为匪，亲翁杀媳，兄弟相煎，情人反目……大革命、日寇入侵、三年内战，白鹿原翻云覆雨，王旗变幻，家仇国恨交错缠结，冤冤相报代代不已……古老的土地在新生的阵痛中颤栗。厚重深邃的思想内容，复杂多变的人物性格，跌宕曲折的故事情节，绚丽多彩的风土人情，形成作品鲜明的艺术特色和令人震撼的真实感。');
+INSERT INTO `librarysystem`.`author` (`id`, `name`,`description`) VALUES ('1', 'Jaye', '北卡罗莱纳大学哲学系教授');
+INSERT INTO `librarysystem`.`author` (`id`, `name`,`description`) VALUES ('2', 'Xueqin Cao', 'The Story of the Stone');
+INSERT INTO `librarysystem`.`author` (`id`, `name`,`description`) VALUES ('3', 'Chengen Wu', 'Journey to the West');
+INSERT INTO `librarysystem`.`author` (`id`, `name`,`description`) VALUES ('4', '司马迁', '西汉史学家');
+INSERT INTO `librarysystem`.`author` (`id`, `name`,`description`) VALUES ('5', '陈忠实', '中国当代著名作家，中国作家协会副主席');
+INSERT INTO `librarysystem`.`author` (`id`, `name`,`description`) VALUES ('6', '钱钟书', '作家、文学研究家、翻译家');
+
+INSERT INTO `librarysystem`.`book` (`isbn`, `aid`, `description`, `popularity`, `price`, `publisher`, `title`, `year`) VALUES ('9787020026906', '1', '白鹿原', '10', '28.00', 'testpublisher', '白鹿原', '2021');
+INSERT INTO `librarysystem`.`book` (`isbn`, `aid`, `description`, `popularity`, `price`, `publisher`, `title`, `year`) VALUES ('9787101003048', '2', '史记是我国第一部通史。在史记之前，有以年代为次的“编年史”如春秋，有以地域为限的“国别史”如国语、战国策，有以文告档卷形式保存下来的“政治史”如尚书，可是没有上下几千年，包罗各方面，而又融会贯通，脉络分明，像史记那样的通史。', '10', '28.00', 'testpublisher', '史记（全十册）', '2021');
+INSERT INTO `librarysystem`.`book` (`isbn`, `aid`, `description`, `popularity`, `price`, `publisher`, `title`, `year`) VALUES ('9787208061644', '3', '故事如此残忍而又美丽，作者以温暖细腻的笔法勾勒人性的本质与救赎，读来令人荡气回肠。', '110', '18.00', 'testpublisher', '追风筝的人', '2021');
+INSERT INTO `librarysystem`.`book` (`isbn`, `aid`, `description`, `popularity`, `price`, `publisher`, `title`, `year`) VALUES ('9787544253994', '4', '百年孤独》是魔幻现实主义文学的代表作，描写了布恩迪亚家族七代人的传奇故事，以及加勒比海沿岸小镇马孔多的百年兴衰，反映', '120', '228.00', 'testpublisher', '百年孤独', '2021');
+INSERT INTO `librarysystem`.`book` (`isbn`, `aid`, `description`, `popularity`, `price`, `publisher`, `title`, `year`) VALUES ('9787559809940', '5', '哲学是做出来的：初学者哲学技术指南不同于一般的哲学导论，本书纯讲哲学“技术”：哲学论证的方法有哪些；什么', '130', '23.00', 'testpublisher', '白鹿原', '2021');
+INSERT INTO `librarysystem`.`book` (`isbn`, `aid`, `description`, `popularity`, `price`, `publisher`, `title`, `year`) VALUES ('9787020024759', '6', '很多人认为这是一部幽默作品。除了各具特色的人物语言之外，作者夹叙其间的文字也显着机智与幽默。这是本书的一大特色。', '140', '9.00', 'testpublisher', '白鹿原', '2021');
+
+-- INSERT INTO `book` (`isbn`, `price`, `title`, `description`) VALUES ('9787020026906',28.00,'白鹿原','');
 -- INSERT INTO `book` (`isbn`, `price`, `title`, `description`) VALUES ('9787101003048',125.00,'史记（全十册）','史记是我国第一部通史。在史记之前，有以年代为次的“编年史”如春秋，有以地域为限的“国别史”如国语、战国策，有以文告档卷形式保存下来的“政治史”如尚书，可是没有上下几千年，包罗各方面，而又融会贯通，脉络分明，像史记那样的通史。');
 -- INSERT INTO `book` (`isbn`, `price`, `title`, `description`) VALUES ('9787208061644',29.00,'追风筝的人','故事如此残忍而又美丽，作者以温暖细腻的笔法勾勒人性的本质与救赎，读来令人荡气回肠。');
 -- INSERT INTO `book` (`isbn`, `price`, `title`, `description`) VALUES ('9787544253994',39.50,'百年孤独','《百年孤独》是魔幻现实主义文学的代表作，描写了布恩迪亚家族七代人的传奇故事，以及加勒比海沿岸小镇马孔多的百年兴衰，反映了拉丁美洲一个世纪以来风云变幻的历史。作品融入神话传说、民间故事、宗教典故等神秘因素，巧妙地糅合了现实与虚幻，展现出一个瑰丽的想象世界，成为20世纪最重要的经典文学巨著之一。');
@@ -48,11 +55,11 @@
 -- INSERT INTO `book_in_library` (`id`, `isbn`, `location`, `state`) VALUES (18, '9787020024759', '2F7S', 'inlib');
 
 
-INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('EdSheeran','E10ADC3949BA59ABBE56E057F20F883E','13333333333',10);
-INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('Bruno','E10ADC3949BA59ABBE56E057F20F883E','13333333331',10);
-INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('Maroon','E10ADC3949BA59ABBE56E057F20F883E','13333333332',10);
-INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('Lola','E10ADC3949BA59ABBE56E057F20F883E','13333333335',10);
-INSERT INTO `reader` (`name`, `password`, `phone`, `credit`) VALUES ('Michael','E10ADC3949BA59ABBE56E057F20F883E','13333333334',10);
+INSERT INTO `librarysystem`.`reader` (`name`, `password`, `phone`, `credit`) VALUES ('EdSheeran','E10ADC3949BA59ABBE56E057F20F883E','13333333333',10);
+INSERT INTO `librarysystem`.`reader` (`name`, `password`, `phone`, `credit`) VALUES ('Bruno','E10ADC3949BA59ABBE56E057F20F883E','13333333331',10);
+INSERT INTO `librarysystem`.`reader` (`name`, `password`, `phone`, `credit`) VALUES ('Maroon','E10ADC3949BA59ABBE56E057F20F883E','13333333332',10);
+INSERT INTO `librarysystem`.`reader` (`name`, `password`, `phone`, `credit`) VALUES ('Lola','E10ADC3949BA59ABBE56E057F20F883E','13333333335',10);
+INSERT INTO `librarysystem`.`reader` (`name`, `password`, `phone`, `credit`) VALUES ('Michael','E10ADC3949BA59ABBE56E057F20F883E','13333333334',10);
 
 INSERT INTO `librarysystem`.`role` (`id`, `description`, `name`) VALUES ('1', 'admin', 'admin');
 INSERT INTO `librarysystem`.`role` (`id`, `description`, `name`) VALUES ('2', 'user', 'user');
