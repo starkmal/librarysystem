@@ -1,5 +1,8 @@
 package com.dd.librarysystem.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="book")
@@ -22,34 +25,37 @@ public class Book {
     @Column(name="year")
     private int year;
 
-    @Column(name="aid")
-    private int aid;
-
     @Column(name="popularity")
     private int popularity;
 
+    @JsonIgnoreProperties({"books"})
+    @JoinColumn
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Author author;
+
+    @JsonIgnoreProperties({"book"})
+    @OneToMany(mappedBy = "book")
+    private List<BookLib> repo;
+
     public Book() {}
 
-    public Book(String isbn, double price, String title, String description, String publisher, int year, int aid, int popularity) {
+    public Book(String isbn, double price, String title, String description, String publisher, Author author, int year, int popularity) {
         this.isbn = isbn;
         this.price = price;
         this.title = title;
         this.description = description;
         this.publisher = publisher;
         this.year = year;
-        this.aid = aid;
         this.popularity = popularity;
+        this.author = author;
     }
 
-    public Book(Book b) {
-        this.isbn = b.getIsbn();
-        this.price = b.getPrice();
-        this.title = b.getTitle();
-        this.description = b.getDescription();
-        this.publisher = b.getPublisher();
-        this.year = b.getYear();
-        this.aid = b.getAid();
-        this.popularity = b.getPopularity();
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public String getIsbn() {
@@ -100,19 +106,19 @@ public class Book {
         this.year = year;
     }
 
-    public int getAid() {
-        return aid;
-    }
-
-    public void setAid(int aid) {
-        this.aid = aid;
-    }
-
     public int getPopularity() {
         return popularity;
     }
 
     public void setPopularity(int popularity) {
         this.popularity = popularity;
+    }
+
+    public List<BookLib> getRepo() {
+        return repo;
+    }
+
+    public void setRepo(List<BookLib> repo) {
+        this.repo = repo;
     }
 }

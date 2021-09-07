@@ -1,5 +1,7 @@
 package com.dd.librarysystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,27 +11,22 @@ public class BookLib {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="isbn")
-    private String isbn;
-
     @Column(name="location")
     private String location;
 
     @Column(name="state")
     private String state;
 
+    @JsonIgnoreProperties({"repo"})
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Book book;
+
     public BookLib() {}
 
-    public BookLib(String isbn, String location, String state) {
-        this.isbn = isbn;
+    public BookLib(Book book, String location, String state) {
+        this.book = book;
         this.location = location;
         this.state = state;
-    }
-
-    public BookLib(BookLib b) {
-        this.isbn = b.getIsbn();
-        this.location = b.getLocation();
-        this.state = b.getState();
     }
 
     public int getId() {
@@ -40,12 +37,12 @@ public class BookLib {
         this.id = id;
     }
 
-    public String getIsbn() {
-        return isbn;
+    public Book getBook() {
+        return book;
     }
 
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public String getLocation() {

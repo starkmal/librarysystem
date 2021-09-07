@@ -13,6 +13,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+class AuthorJsonData {
+    private int id;
+    private String desc;
+    private String name;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+
 @RestController
 public class AuthorController {
 
@@ -35,7 +65,7 @@ public class AuthorController {
         try {
             List<Author> authors = authorRepository.findByNameContaining(name);
             if (authors.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
             return new ResponseEntity<>(authors, HttpStatus.OK);
         } catch (Exception e) {
@@ -43,25 +73,10 @@ public class AuthorController {
         }
     }
 
-    @GetMapping("/author/{id}/books")
-    public ResponseEntity<List<Book>> getAuthorBooks(@PathVariable("id") int id) {
-        try {
-            List<Book> books = new ArrayList<Book>(bookRepository.findByAid(id));
-
-            if (books.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-
-            return new ResponseEntity<>(books, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @PostMapping("/author")
-    public ResponseEntity<Author> createAuthor(@RequestBody Author author) {
+    public ResponseEntity<Author> createAuthor(@RequestBody AuthorJsonData data) {
         try {
-            Author _author = authorRepository.save(new Author(author));
+            Author _author = authorRepository.save(new Author(data.getName(),data.getDesc()));
             return new ResponseEntity<>(_author, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -76,6 +91,7 @@ public class AuthorController {
             Author _author = authorData.get();
             _author.setDesc(author.getDesc());
             _author.setName(author.getName());
+            _author.setBooks(author.getBooks());
             return new ResponseEntity<>(authorRepository.save(_author), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

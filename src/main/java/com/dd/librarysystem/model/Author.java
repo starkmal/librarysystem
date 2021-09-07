@@ -1,6 +1,9 @@
 package com.dd.librarysystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="author")
@@ -15,16 +18,15 @@ public class Author {
     @Column(name="description")
     private String desc;
 
+    @JsonIgnoreProperties({"author"})
+    @OneToMany(mappedBy = "author")
+    private List<Book> books;
+
     public Author() {}
 
     public Author(String name, String desc) {
         this.name = name;
         this.desc = desc;
-    }
-
-    public Author(Author b) {
-        this.name = b.getName();
-        this.desc = b.getDesc();
     }
 
     public int getId() {
@@ -49,5 +51,13 @@ public class Author {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public List<Book> getBooks() {
+        return books;
+    }
+
+    public void setBooks(List<Book> books) {
+        this.books = books;
     }
 }

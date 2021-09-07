@@ -5,6 +5,7 @@ import com.dd.librarysystem.model.Book;
 import com.dd.librarysystem.model.BookLib;
 import com.dd.librarysystem.repository.AuthorRepository;
 import com.dd.librarysystem.repository.BookRepository;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,7 +15,86 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.*;
+
+class BookJsonData {
+    private String isbn;
+    private double price;
+    private String title;
+    private String description;
+    private String publisher;
+    private int year;
+    private int popularity;
+    private int author_id;
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getPopularity() {
+        return popularity;
+    }
+
+    public void setPopularity(int popularity) {
+        this.popularity = popularity;
+    }
+
+    public int getAuthor_id() {
+        return author_id;
+    }
+
+    public void setAuthor_id(int author_id) {
+        this.author_id = author_id;
+    }
+}
 
 @RestController
 public class BookController {
@@ -39,11 +119,8 @@ public class BookController {
                 pageTuts = bookRepository.findByIsbn(isbn, paging);
             else if (title != null)
                 pageTuts = bookRepository.findByTitleContaining(title, paging);
-            else if (authorname != null) {
-                List<Author> author = authorRepository.findByName(authorname);
-                int id = author.isEmpty() ? -1 : author.get(0).getId();
-                pageTuts = bookRepository.findByAid(id, paging);
-            }
+            else if (authorname != null)
+                pageTuts = bookRepository.findByAuthorName(authorname, paging);
             assert pageTuts != null;
             books = pageTuts.getContent();
 
@@ -66,9 +143,12 @@ public class BookController {
     }
 
     @PostMapping("/book")
-    public ResponseEntity<Book> createBook(@RequestBody Book book) {
+    public ResponseEntity<Book> createBook(@RequestBody BookJsonData data) {
         try {
-            Book _book = bookRepository.save(new Book(book));
+            Author author = null;
+            Optional<Author> author1 = authorRepository.findById(data.getAuthor_id());
+            if (author1.isPresent()) author = author1.get();
+            Book _book = bookRepository.save(new Book(data.getIsbn(),data.getPrice(),data.getTitle(),data.getDescription(),data.getPublisher(),author, data.getYear(), data.getPopularity()));
             return new ResponseEntity<>(_book, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -86,7 +166,8 @@ public class BookController {
             _book.setYear(book.getYear());
             _book.setPublisher(book.getPublisher());
             _book.setPrice(book.getPrice());
-            _book.setAid(book.getAid());
+            _book.setAuthor(book.getAuthor());
+            _book.setPopularity(book.getPopularity());
             return new ResponseEntity<>(bookRepository.save(_book), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

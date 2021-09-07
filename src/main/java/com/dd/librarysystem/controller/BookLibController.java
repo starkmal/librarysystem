@@ -5,6 +5,7 @@ import com.dd.librarysystem.model.BookLib;
 import com.dd.librarysystem.model.Borrow;
 import com.dd.librarysystem.model.Cart;
 import com.dd.librarysystem.repository.BookLibRepository;
+import com.dd.librarysystem.repository.BookRepository;
 import com.dd.librarysystem.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,39 +18,46 @@ import org.springframework.web.bind.annotation.*;
 import javax.swing.text.html.Option;
 import java.util.*;
 
+class BookLibJsonData {
+    String book_isbn;
+    String location;
+    String state;
+
+    public String getBook_isbn() {
+        return book_isbn;
+    }
+
+    public void setBook_isbn(String book_isbn) {
+        this.book_isbn = book_isbn;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+}
+
 @RestController
 public class BookLibController {
     @Autowired
     BookLibRepository bookLibRepository;
 
     @Autowired
+    BookRepository bookRepository;
+
+    @Autowired
     CartRepository cartRepository;
-
-    /**
-     * 返回某本书的剩余数量
-     * @return 数量
-     */
-    @GetMapping("/repo/num/{isbn}")
-    public ResponseEntity<Integer> getBookRemain(@PathVariable("isbn") String isbn) {
-        return new ResponseEntity<>(bookLibRepository.countByIsbn(isbn), HttpStatus.OK);
-    }
-
-    /**
-     * 返回某个isbn的所有藏书
-     * @return list
-     */
-    @GetMapping("/repo/book/{isbn}")
-    public ResponseEntity<List<BookLib>> getRepoByISBN(@PathVariable("isbn") String isbn) {
-        try {
-            List<BookLib> books = bookLibRepository.findByIsbn(isbn);
-            if (books.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(books, HttpStatus.OK);
-        } catch(Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
 
     /**
      * 根据cart中的书isbn返回库存列表
@@ -77,9 +85,12 @@ public class BookLibController {
     }
 
     @PostMapping("/repo")
-    public ResponseEntity<BookLib> createBookInLib(@RequestBody BookLib book) {
+    public ResponseEntity<BookLib> createBookInLib(@RequestBody BookLibJsonData data) {
         try {
-            BookLib _book = bookLibRepository.save(new BookLib(book));
+            Book book = null;
+            Optional<Book> book1 = bookRepository.findByIsbn(data.getBook_isbn());
+            if (book1.isPresent()) book = book1.get();
+            BookLib _book = bookLibRepository.save(new BookLib(book, data.getLocation(), data.getState()));
             return new ResponseEntity<>(_book, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -92,7 +103,7 @@ public class BookLibController {
 
         if (bookLibData.isPresent()) {
             BookLib _book = bookLibData.get();
-            _book.setIsbn(book.getIsbn());
+            _book.setBook(book.getBook());
             _book.setLocation(book.getLocation());
             _book.setState(book.getState());
             return new ResponseEntity<>(bookLibRepository.save(_book), HttpStatus.OK);
@@ -108,22 +119,6 @@ public class BookLibController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    //与borrow部分逻辑相同
-    @PutMapping("/repo/{id}/reserve")
-    public ResponseEntity<BookLib> updateReserve(@PathVariable("id") int id, @RequestBody BookLib book) {
-        Optional<BookLib> bookLibData = bookLibRepository.findById(id);
-
-        if(bookLibData.isPresent()) {
-            BookLib _book = bookLibData.get();
-            _book.setIsbn(book.getIsbn());
-            _book.setLocation(book.getLocation());
-            _book.setState(book.getState());
-            return new ResponseEntity<>(bookLibRepository.save(_book), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
         }
     }
 }
