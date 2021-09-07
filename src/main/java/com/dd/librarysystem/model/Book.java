@@ -22,8 +22,9 @@ public class Book {
     @Column(name="year")
     private int year;
 
-    @Column(name="aid")
-    private int aid;
+    @JoinColumn
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Author author;
 
     @Column(name="popularity")
     private int popularity;

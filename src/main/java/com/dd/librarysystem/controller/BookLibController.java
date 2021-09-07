@@ -1,9 +1,6 @@
 package com.dd.librarysystem.controller;
 
-import com.dd.librarysystem.model.Book;
-import com.dd.librarysystem.model.BookLib;
-import com.dd.librarysystem.model.Borrow;
-import com.dd.librarysystem.model.Cart;
+import com.dd.librarysystem.model.*;
 import com.dd.librarysystem.repository.BookLibRepository;
 import com.dd.librarysystem.repository.CartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +21,36 @@ public class BookLibController {
 
     @Autowired
     CartRepository cartRepository;
+
+
+    @GetMapping("/search/repo")
+    public ResponseEntity<Map<String, Object>> searchRepoBook(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String isbn,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        try {
+            List<BookLib> books;
+            Pageable paging = PageRequest.of(page, size);
+            Page<BookLib> pageTuts = null;
+            if (isbn != null)
+                pageTuts = bookLibRepository.findByIsbn(isbn, paging);
+            else if (title != null)
+                pageTuts = bookLibRepository.findByTitleContaining(title, paging);
+            assert pageTuts != null;
+            books = pageTuts.getContent();
+
+            Map<String, Object> res = new HashMap<>();
+            res.put("books", books);
+            res.put("currentPage", pageTuts.getNumber());
+            res.put("totalItems", pageTuts.getTotalElements());
+            res.put("totalPages", pageTuts.getTotalPages());
+            return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     /**
      * 返回某本书的剩余数量
