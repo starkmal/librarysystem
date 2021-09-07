@@ -1,5 +1,8 @@
 package com.dd.librarysystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -10,18 +13,17 @@ public class Borrow {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="reader_id")
-    private int readerId;
+    @NotNull
+    @JsonIgnoreProperties({"records"})
+    @JoinColumn
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Reader reader;
 
-    @Column(name="book_id")
-    private int bookId;
+    @NotNull
+    @OneToOne
+    private BookLib book;
 
-    @Column(name="borrow_librarian_id")
-    private int borrowLibrarianId;
-
-    @Column(name="return_librarian_id")
-    private Integer returnLibrarianId;
-
+    @NotNull
     @Column(name="borrow_time")
     private Date borrowTime;
 
@@ -30,22 +32,10 @@ public class Borrow {
 
     public Borrow() {}
 
-    public Borrow(int reader_id, int book_id, int borrow_librarian_id, Integer return_librarian_id, Date borrow_time, Date return_time) {
-        this.readerId = reader_id;
-        this.bookId = book_id;
-        this.borrowLibrarianId = borrow_librarian_id;
-        this.returnLibrarianId = return_librarian_id;
+    public Borrow(Reader reader, BookLib book, Date borrow_time) {
+        this.reader = reader;
+        this.book = book;
         this.borrowTime = borrow_time;
-        this.returnTime = return_time;
-    }
-
-    public Borrow(Borrow b) {
-        this.readerId = b.getReaderId();
-        this.bookId = b.getBookId();
-        this.borrowLibrarianId = b.getBorrowLibrarianId();
-        this.returnLibrarianId = b.getReturnLibrarianId();
-        this.borrowTime = b.getBorrowTime();
-        this.returnTime = b.getReturnTime();
     }
 
     public int getId() {
@@ -54,38 +44,6 @@ public class Borrow {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getReaderId() {
-        return readerId;
-    }
-
-    public void setReaderId(int reader_id) {
-        this.readerId = reader_id;
-    }
-
-    public int getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(int book_id) {
-        this.bookId = book_id;
-    }
-
-    public int getBorrowLibrarianId() {
-        return borrowLibrarianId;
-    }
-
-    public void setBorrowLibrarianId(int borrow_librarian_id) {
-        this.borrowLibrarianId = borrow_librarian_id;
-    }
-
-    public Integer getReturnLibrarianId() {
-        return returnLibrarianId;
-    }
-
-    public void setReturnLibrarianId(Integer return_librarian_id) {
-        this.returnLibrarianId = return_librarian_id;
     }
 
     public Date getBorrowTime() {
@@ -102,5 +60,21 @@ public class Borrow {
 
     public void setReturnTime(Date return_time) {
         this.returnTime = return_time;
+    }
+
+    public Reader getReader() {
+        return reader;
+    }
+
+    public void setReader(Reader reader) {
+        this.reader = reader;
+    }
+
+    public BookLib getBook() {
+        return book;
+    }
+
+    public void setBook(BookLib book) {
+        this.book = book;
     }
 }

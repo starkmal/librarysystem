@@ -1,8 +1,10 @@
 package com.dd.librarysystem.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.GeneratorType;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="reader")
@@ -20,6 +22,11 @@ public class Reader {
     @Column(name = "phone")
     private String phone;
 
+    @JsonIgnoreProperties({"reader"})
+    @OneToMany(mappedBy = "reader")
+    private List<Borrow> records;
+
+
     @OneToOne(cascade = CascadeType.ALL)
     private Cart cart;
 
@@ -33,13 +40,6 @@ public class Reader {
         this.password = password;
         this.phone = phone;
         this.credit = credit;
-    }
-
-    public Reader(Reader b) {
-        this.name = b.getName();
-        this.password = b.getPassword();
-        this.phone = b.getPhone();
-        this.credit = b.getCredit();
     }
 
     public int getCredit() {

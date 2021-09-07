@@ -121,4 +121,17 @@ public class Book {
     public void setRepo(List<BookLib> repo) {
         this.repo = repo;
     }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "isbn='" + isbn + '\'' +
+                ", price=" + price +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", publisher='" + publisher + '\'' +
+                ", year=" + year +
+                ", popularity=" + popularity +
+                '}';
+    }
 }
