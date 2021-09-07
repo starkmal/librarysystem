@@ -9,9 +9,6 @@ public class BookLib {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @Column(name="title")
-    private String title;
-
     @Column(name="isbn")
     private String isbn;
 
