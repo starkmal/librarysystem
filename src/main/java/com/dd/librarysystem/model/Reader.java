@@ -24,7 +24,7 @@ public class Reader {
 
     @JsonIgnoreProperties({"reader"})
     @OneToMany(mappedBy = "reader")
-    private List<Borrow> records;
+    private List<Borrow> borrows;
 
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -80,5 +80,13 @@ public class Reader {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public List<Borrow> getBorrows() {
+        return borrows;
+    }
+
+    public void setBorrows(List<Borrow> borrows) {
+        this.borrows = borrows;
     }
 }

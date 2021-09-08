@@ -14,7 +14,7 @@ public class Borrow {
     private int id;
 
     @NotNull
-    @JsonIgnoreProperties({"records"})
+    @JsonIgnoreProperties({"borrows"})
     @JoinColumn
     @ManyToOne(cascade = CascadeType.ALL)
     private Reader reader;
