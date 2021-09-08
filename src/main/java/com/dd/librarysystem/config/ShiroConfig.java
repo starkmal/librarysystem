@@ -23,7 +23,7 @@ public class ShiroConfig {
         Map<String, String> filterChain = new HashMap<>();
 
         //filterChain.put("/api/admin/special", "roles[users]");
-//        filterChain.put("/api/admin/index", "anon");
+        filterChain.put("/login", "anon");
 //        filterChain.put("/api/admin/mainpage", "authcBasic");
 
         filterChain.put("/**", "anon");
