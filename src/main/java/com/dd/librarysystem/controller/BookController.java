@@ -103,11 +103,12 @@ public class BookController {
 
     @Autowired
     AuthorRepository authorRepository;
-    @GetMapping("/search")
+
+    @GetMapping("/book/search")
     public ResponseEntity<Map<String, Object>> searchBook(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String isbn,
-            @RequestParam(required = false) String authorname,
+            @RequestParam(required = false) String author,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -119,10 +120,11 @@ public class BookController {
                 pageTuts = bookRepository.findByIsbn(isbn, paging);
             else if (title != null)
                 pageTuts = bookRepository.findByTitleContaining(title, paging);
-            else if (authorname != null)
-                pageTuts = bookRepository.findByAuthorName(authorname, paging);
+            else if (author != null)
+                pageTuts = bookRepository.findByAuthorNameContaining(author, paging);
             assert pageTuts != null;
             books = pageTuts.getContent();
+            System.out.println(books);
 
             Map<String, Object> res = new HashMap<>();
             res.put("books", books);

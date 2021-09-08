@@ -112,6 +112,19 @@ public class BookLibController {
         }
     }
 
+    @PutMapping("/repo")
+    public ResponseEntity<BookLib> updateBookState(@RequestParam("id") int id, @RequestParam("state") String state) {
+        Optional<BookLib> bookLibData = bookLibRepository.findById(id);
+
+        if (bookLibData.isPresent()) {
+            BookLib _book = bookLibData.get();
+            _book.setState(state);
+            return new ResponseEntity<>(bookLibRepository.save(_book), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @DeleteMapping("/repo/{id}")
     public ResponseEntity<HttpStatus> deleteBookInLib(@PathVariable("id") int id) {
         try {
