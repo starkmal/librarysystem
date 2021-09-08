@@ -113,12 +113,16 @@ public class BookLibController {
     }
 
     @PutMapping("/repo")
-    public ResponseEntity<BookLib> updateBookState(@RequestParam("id") int id, @RequestParam("state") String state) {
+    public ResponseEntity<BookLib> updateBookState(@RequestParam("id") int id, @RequestParam(value = "state", required = false) String state) {
         Optional<BookLib> bookLibData = bookLibRepository.findById(id);
 
         if (bookLibData.isPresent()) {
             BookLib _book = bookLibData.get();
-            _book.setState(state);
+            if (state == null) {
+                if (Objects.equals(_book.getState(), "已借出")) _book.setState("在库");
+                else _book.setState("已借出");
+            }
+            else _book.setState(state);
             return new ResponseEntity<>(bookLibRepository.save(_book), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

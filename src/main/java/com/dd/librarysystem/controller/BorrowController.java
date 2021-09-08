@@ -47,6 +47,19 @@ class BorrowJsonData {
     }
 }
 
+class ReqJsonData {
+    int id;
+    Date time;
+
+    public int getId() {
+        return id;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+}
+
 @RestController
 public class BorrowController {
     @Autowired
@@ -95,7 +108,11 @@ public class BorrowController {
         try {
             BookLib book = null;
             Optional<BookLib> book1 = bookLibRepository.findById(data.getBook_id());
-            if (book1.isPresent()) book = book1.get();
+            if (book1.isPresent()) {
+                book = book1.get();
+                if (!Objects.equals(book.getState(), "在库"))
+                    return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            }
             else return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
 
             Reader reader = null;
@@ -110,13 +127,13 @@ public class BorrowController {
         }
     }
 
-    @PutMapping("/borrow/{id}")
-    public ResponseEntity<Borrow> updateBorrow(@PathVariable("id") int id, @RequestBody Borrow borrow) {
-        Optional<Borrow> borrowData = borrowRepository.findById(id);
+    @PutMapping("/borrow")
+    public ResponseEntity<Borrow> updateBorrow(@RequestBody ReqJsonData data) {
+        Optional<Borrow> borrowData = borrowRepository.findById(data.getId());
 
         if (borrowData.isPresent()) {
             Borrow _borrow = borrowData.get();
-            _borrow.setReturnTime(borrow.getReturnTime());
+            _borrow.setReturnTime(data.getTime());
             return new ResponseEntity<>(borrowRepository.save(_borrow), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
