@@ -84,6 +84,24 @@ public class BookLibController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/repo/count")
+    public ResponseEntity<Long> getBookCount() {
+        try {
+            return new ResponseEntity<>(bookLibRepository.count(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/repo/countBorrowed")
+    public ResponseEntity<Long> getBookBorrowedCount() {
+        try {
+            return new ResponseEntity<>(bookLibRepository.countByState("已借出"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/repo")
     public ResponseEntity<BookLib> createBookInLib(@RequestBody BookLibJsonData data) {
         try {

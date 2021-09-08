@@ -20,6 +20,7 @@ import javax.persistence.Column;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.util.*;
+import java.util.stream.Collectors;
 
 class BookJsonData {
     private String isbn;
@@ -142,6 +143,23 @@ public class BookController {
         Optional<Book> bookData = bookRepository.findById(isbn);
 
         return bookData.map(book -> new ResponseEntity<>(book, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    //获取分数最高的前10个书
+    @GetMapping("/book/top")
+    public ResponseEntity<List<Book>> getBookTop() {
+        try {
+            List<Book> books = bookRepository.findAll().
+                    stream().sorted(Comparator.comparingInt(Book::getPopularity).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
+            if (books.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(books, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/book")

@@ -88,6 +88,15 @@ public class ReaderController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/reader/count")
+    public ResponseEntity<Long> getReaderCount() {
+        try {
+            return new ResponseEntity<>(readerRepository.count(), HttpStatus.OK);
+        } catch (Exception e){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @PostMapping("/reader")
     public ResponseEntity<Reader> createReader(@RequestBody ReaderJsonData data) {
         try {

@@ -7,6 +7,7 @@ import com.dd.librarysystem.model.Reader;
 import com.dd.librarysystem.repository.BookLibRepository;
 import com.dd.librarysystem.repository.BorrowRepository;
 import com.dd.librarysystem.repository.ReaderRepository;
+import com.dd.librarysystem.service.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 class BorrowJsonData {
     int reader_id;
@@ -98,6 +100,35 @@ public class BorrowController {
             res.put("totalItems", pageTuts.getTotalElements());
             res.put("totalPages", pageTuts.getTotalPages());
             return new ResponseEntity<>(res, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/borrow/recent")
+    public ResponseEntity<List<Borrow>> getRecentBorrows() {
+        try {
+            List<Borrow> borrows = borrowRepository.findAll()
+                    .stream().sorted(Comparator.comparing(Borrow::getBorrowTime).reversed())
+                    .limit(10)
+                    .collect(Collectors.toList());
+            if (borrows.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(borrows, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/borrow/count")
+    public ResponseEntity<Long> getTotalBorrows() {
+        try {
+            return new ResponseEntity<>(
+                    borrowRepository.findAll()
+                            .stream().filter(b -> DateUtils.isToday(b.getBorrowTime()))
+                            .count(),
+                        HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
