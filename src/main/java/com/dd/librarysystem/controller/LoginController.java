@@ -38,6 +38,15 @@ public class LoginController {
         return new ResponseEntity<>(HttpStatus.OK);
 
     }
+    @GetMapping("/checklogin")
+    public ResponseEntity<HttpStatus> checklogin() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject.isAuthenticated()) {
+            System.out.println("检测已登录");
+            return new ResponseEntity<HttpStatus>(HttpStatus.OK);
+        }
+        return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+    }
 
 
     @GetMapping("/logout")
