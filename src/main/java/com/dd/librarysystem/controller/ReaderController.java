@@ -55,7 +55,6 @@ public class ReaderController {
     public ResponseEntity<Map<String, Object>> searchBook(
             @RequestParam(required = false) Integer id,
             @RequestParam(required = false) String name,
-            @RequestParam(required = false) String phone,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -67,9 +66,6 @@ public class ReaderController {
                 pageTuts = readerRepository.findById(id, paging);
             else if (name != null)
                 pageTuts = readerRepository.findByNameContaining(name, paging);
-            else if (phone != null)
-                pageTuts = readerRepository.findByPhoneContaining(phone, paging);
-            else pageTuts = readerRepository.findAll(paging);
             assert pageTuts != null;
             readers = pageTuts.getContent();
 
@@ -96,7 +92,7 @@ public class ReaderController {
     public ResponseEntity<Long> getReaderCount() {
         try {
             return new ResponseEntity<>(readerRepository.count(), HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
