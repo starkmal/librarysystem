@@ -78,6 +78,7 @@ public class BorrowController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String isbn,
             @RequestParam(required = false) String readername,
+            @RequestParam(required = false) int id,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -91,6 +92,7 @@ public class BorrowController {
                 pageTuts = borrowRepository.findByBookBookTitleContaining(title, paging);
             else if (readername != null)
                 pageTuts = borrowRepository.findByReaderNameContaining(readername, paging);
+            else pageTuts = borrowRepository.findByBookId(id, paging);
             assert pageTuts != null;
             borrows = pageTuts.getContent();
 

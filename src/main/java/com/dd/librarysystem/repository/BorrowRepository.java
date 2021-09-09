@@ -11,4 +11,5 @@ public interface BorrowRepository extends JpaRepository<Borrow, Integer> {
     Page<Borrow> findByReaderNameContaining(String name, Pageable pageable);
     Page<Borrow> findByBookBookTitleContaining(String name, Pageable pageable);
     Page<Borrow> findByBookBookIsbn(String isbn, Pageable pageable);
+    Page<Borrow> findByBookId(int id, Pageable pageable);
 }
