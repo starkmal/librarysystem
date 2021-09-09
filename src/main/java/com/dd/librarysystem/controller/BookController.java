@@ -123,6 +123,7 @@ public class BookController {
                 pageTuts = bookRepository.findByTitleContaining(title, paging);
             else if (author != null)
                 pageTuts = bookRepository.findByAuthorNameContaining(author, paging);
+            else pageTuts = bookRepository.findAll(paging);
             assert pageTuts != null;
             books = pageTuts.getContent();
             System.out.println(books);

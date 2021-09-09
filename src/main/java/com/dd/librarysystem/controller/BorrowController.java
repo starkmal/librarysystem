@@ -78,7 +78,8 @@ public class BorrowController {
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String isbn,
             @RequestParam(required = false) String readername,
-            @RequestParam(required = false) int id,
+            @RequestParam(required = false) Integer id,
+            @RequestParam(required = false, defaultValue = "true") boolean borrowed,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -86,13 +87,26 @@ public class BorrowController {
             List<Borrow> borrows;
             Pageable paging = PageRequest.of(page, size);
             Page<Borrow> pageTuts = null;
-            if (isbn != null)
-                pageTuts = borrowRepository.findByBookBookIsbn(isbn, paging);
-            else if (title != null)
-                pageTuts = borrowRepository.findByBookBookTitleContaining(title, paging);
-            else if (readername != null)
-                pageTuts = borrowRepository.findByReaderNameContaining(readername, paging);
-            else pageTuts = borrowRepository.findByBookId(id, paging);
+            if (isbn != null) {
+                if (borrowed == false) pageTuts = borrowRepository.findByBookBookIsbn(isbn, paging);
+                else pageTuts = borrowRepository.findByBookBookIsbnAndReturnTime(isbn, null,paging);
+            }
+            else if (title != null) {
+                if (borrowed == false) pageTuts = borrowRepository.findByBookBookTitleContaining(title, paging);
+                else pageTuts = borrowRepository.findByBookBookTitleContainingAndReturnTime(title, null, paging);
+            }
+            else if (readername != null) {
+                if (borrowed == false) pageTuts = borrowRepository.findByReaderNameContaining(readername, paging);
+                else pageTuts = borrowRepository.findByReaderNameContainingAndReturnTime(readername, null, paging);
+            }
+            else if (id != null) {
+                if (borrowed == false) pageTuts = borrowRepository.findByBookId(id, paging);
+                else pageTuts = borrowRepository.findByBookIdAndReturnTime(id, null, paging);
+            }
+            else {
+                if (borrowed == false) pageTuts = borrowRepository.findAll(paging);
+                else pageTuts = borrowRepository.findByReturnTime(null, paging);
+            }
             assert pageTuts != null;
             borrows = pageTuts.getContent();
 

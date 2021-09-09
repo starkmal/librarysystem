@@ -10,4 +10,5 @@ import java.util.List;
 public interface ReaderRepository extends JpaRepository<Reader, Integer> {
     Page<Reader> findById(int id, Pageable pageable);
     Page<Reader> findByNameContaining(String name, Pageable pageable);
+    Page<Reader> findByPhoneContaining(String phone, Pageable pageable);
 }
